@@ -1,25 +1,17 @@
 from django.urls import path
-from .api.viewsets import TaskViewSet, TagViewSet
-from rest_framework.urlpatterns import format_suffix_patterns
-from .views import api_root
+from .views import TaskListView, TaskCreateView, TagListView, TagCreateView, TaskDetailView, TagDetailView
 
 
-urlpatterns = format_suffix_patterns([
-    path('', api_root, name='api-root'),
+urlpatterns = [
+    path('tasks/', TaskListView.as_view(), name='task-list'),
 
-    path('tasks/',
-         TaskViewSet.as_view({'get': 'list', 'post': 'create'}),
-         name='task-list'),
+    path('tasks/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
 
-    path('tasks/<int:pk>/',
-         TaskViewSet.as_view({'get': 'retrieve', 'put': 'update',}),
-         name='task-detail'),
+    path('tasks/create/', TaskCreateView.as_view(), name='task-create'),
 
-    path('tags/',
-         TagViewSet.as_view({'get': 'list', 'post': 'create'}),
-         name='tag-list'),
+    path('tags/', TagListView.as_view(), name='tag-list'),
 
-    path('tags/<int:pk>/',
-         TagViewSet.as_view({'get': 'retrieve', 'put': 'update',}),
-         name='tag-detail'),
-])
+    path('tags/<int:pk>/', TagDetailView.as_view(), name='tag-detail'),
+
+    path('tags/create/', TagCreateView.as_view(), name='tag-create'),
+]
